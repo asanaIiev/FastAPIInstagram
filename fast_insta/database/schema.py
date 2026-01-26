@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field
 from enum import Enum
-from typing import Optional, List
+from typing import Optional
 from datetime import date
 
 class StatusChoices(str, Enum):
