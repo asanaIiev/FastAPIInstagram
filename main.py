@@ -4,7 +4,7 @@ from fast_insta.api import auth, user_profile, follow, post, post_like, comment_
 import uvicorn
 app = FastAPI()
 app.include_router(auth.auth_router)
-app.include_router(user_profile.users_router)
+app.include_router(user_profile.user_router)
 app.include_router(follow.follow_router)
 app.include_router(post.post_router)
 app.include_router(post_like.post_like_router)

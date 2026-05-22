@@ -40,7 +40,7 @@ class UserProfileRefreshToken(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('user_profile.id'))
-    token: Mapped[str] = mapped_column(String)
+    refresh_token: Mapped[str] = mapped_column(String)
     created_date: Mapped[date] = mapped_column(Date, default=date.today())
 
     token_user: Mapped[UserProfile] = relationship(back_populates='users_token')
