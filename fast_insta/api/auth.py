@@ -1,5 +1,4 @@
-from datetime import timedelta, datetime
-from fastapi.security import OAuth2PasswordBearer
+from datetime import timedelta, datetime, timezone
 from passlib.context import CryptContext
 from fast_insta.database.models import UserProfile, UserProfileRefreshToken
 from fast_insta.database.schema import UserProfileInputSchema, UserProfileLoginSchema
@@ -13,7 +12,6 @@ from jose import jwt
 auth_router = APIRouter(prefix='/auth', tags=['Auth'])
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 async def get_db():
     db = SessionLocal()
@@ -31,9 +29,9 @@ def verify_password(plain_password, hashed_password):
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_LIFETIME)
+        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_LIFETIME)
     to_encode.update({'exp': expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
