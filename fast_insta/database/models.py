@@ -1,7 +1,7 @@
 from .db import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, ForeignKey, Date, Text, Enum, Boolean
-from typing import List, Optional
+from typing import List
 from enum import Enum as PyEnum
 from datetime import date
 
