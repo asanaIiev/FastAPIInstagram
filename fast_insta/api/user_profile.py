@@ -16,6 +16,7 @@ async def get_db():
 
 @users_router.post('/', response_model=UserProfileOutSchema, summary='Create user', tags=['Users'])
 async def create_user(user: UserProfileInputSchema, db: Session = Depends(get_db)):
+    if user: raise HTTPException(detail='This username or email already exists', status_code=404)
     user_db = UserProfile(**user.model_dump())
     db.add(user_db)
     db.commit()
