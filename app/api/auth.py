@@ -56,8 +56,8 @@ async def login(user: UserProfileLoginSchema, db: Session = Depends(get_db)):
     user_db = db.query(UserProfile).filter(UserProfile.username==user.username).first()
     if not user_db or not verify_password(user.password, user_db.password):
         raise HTTPException(detail='Invalid credentials', status_code=status.HTTP_400_BAD_REQUEST)
-    access_token = create_access_token({'sub': user_db.username})
-    refresh_token = create_refresh_token({'sub': user_db.username})
+    access_token = create_access_token({'sub': str(user_db.id)})
+    refresh_token = create_refresh_token({'sub': str(user_db.id)})
     token_db = UserProfileRefresh(user_id=user_db.id, refresh_token=refresh_token)
     db.add(token_db)
     db.commit()

@@ -14,15 +14,6 @@ async def get_db():
     finally:
         db.close()
 
-@user_router.post('/', response_model=UserProfileOutSchema, tags=['Users'])
-async def post(user: UserProfileInputSchema, db: Session = Depends(get_db)):
-    if user: raise HTTPException(detail='This username or email already exists', status_code=400)
-    user_db = UserProfile(**user.model_dump())
-    db.add(user_db)
-    db.commit()
-    db.refresh(user_db)
-    return user_db
-
 @user_router.get('/', response_model=List[UserProfileOutSchema], summary='Get all users', tags=['Users'])
 async def get(db: Session = Depends(get_db)):
     users_db = db.query(UserProfile).all()

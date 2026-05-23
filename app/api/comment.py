@@ -60,10 +60,13 @@ async def comment_update(comment_id: int, comment: CommentInputSchema, db: Sessi
     return comment_db
 
 @comment_router.delete('/{comment_id}/', response_model=dict, summary='Delete comment', tags=['Comment'])
-async def comment_delete(comment_id: int, db: Session = Depends(get_db)):
-    comment_db = db.query(Comment).filter(Comment.id==comment_id).first()
+async def comment_delete(comment_id: int, user_id: int, db: Session = Depends(get_db)):
+    comment_db = db.query(Comment).filter(
+        Comment.id==comment_id,
+        Comment.user_id==user_id
+    ).first()
     if not comment_db:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Comment not founded with id {comment_id}')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='No user on this comment')
     db.delete(comment_db)
     db.commit()
-    return {'detail': 'Comment has been deleted.'}
+    return {'detail': 'Comment has been deleted'}

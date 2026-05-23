@@ -56,11 +56,14 @@ async def get_following(user_id: int, db: Session = Depends(get_db)):
 
 @follow_router.delete('/{following_id}/', response_model=dict,
                       summary='Delete following', tags=['Follow'])
-async def following_delete(following_id: int, db: Session = Depends(get_db)):
-    following_db = db.query(Follow).filter(Follow.following_id==following_id).first()
+async def following_delete(following_id: int, follower_id: int, db: Session = Depends(get_db)):
+    following_db = db.query(Follow).filter(
+        Follow.follower_id==follower_id,
+        Follow.following_id==following_id
+    ).first()
     if not following_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail='Following not founded by this id')
+                            detail='No following on this user by this user')
     db.delete(following_db)
     db.commit()
     return {'detail': 'Following has been deleted'}
