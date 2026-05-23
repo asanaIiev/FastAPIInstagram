@@ -1,5 +1,5 @@
 from app.database.db import SessionLocal
-from app.database.models import UserProfile, UserProfileRefreshToken
+from app.database.models import UserProfile, UserProfileRefresh
 from app.database.schema import UserProfileLoginSchema, UserProfileInputSchema, UserProfileOutSchema
 from fastapi import HTTPException, APIRouter, Depends, status
 from passlib.context import CryptContext
