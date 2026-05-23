@@ -16,7 +16,7 @@ class UserProfileOutSchema(BaseModel):
     username: str
     email: EmailStr
     status: StatusChoices
-    data_registered: date
+    registered_date: date
 class UserProfileInputSchema(BaseModel):
     username: str = Field(min_length=3, max_length=30)
     password: str = Field(min_length=6)
@@ -60,7 +60,7 @@ class CommentOutSchema(BaseModel):
     user_id: int
     post_id: int
     comment: str
-    created_date: date
+    commented_date: date
 class CommentInputSchema(BaseModel):
     user_id: int
     post_id: int
