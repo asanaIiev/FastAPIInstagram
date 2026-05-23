@@ -18,10 +18,10 @@ class UserProfileOutSchema(BaseModel):
     status: StatusChoices
     registered_date: date
 class UserProfileInputSchema(BaseModel):
-    username: str = Field(min_length=3, max_length=30)
-    password: str = Field(min_length=6)
-    email: EmailStr
-    status: StatusChoices
+    username: str = Field(default=None, min_length=3, max_length=30)
+    password: str = Field(default=None, min_length=6)
+    email: EmailStr = None
+    status: Optional[StatusChoices] = None
 
 class FollowOutSchema(BaseModel):
     id: int
@@ -41,9 +41,9 @@ class PostOutSchema(BaseModel):
     created_date: date
 class PostInputSchema(BaseModel):
     user_id: int
-    post: str
-    description: Optional[str] = Field(max_length=100)
-    hashtag: Optional[str] = Field(max_length=100)
+    post: Optional[str] = None
+    description: Optional[str] = Field(default=None, max_length=100)
+    hashtag: Optional[str] = Field(default=None, max_length=100)
 
 class PostLikeOutSchema(BaseModel):
     id: int
@@ -53,7 +53,7 @@ class PostLikeOutSchema(BaseModel):
 class PostLikeInputSchema(BaseModel):
     user_id: int
     post_id: int
-    like: bool
+    like: bool = Field(default=False)
 
 class CommentOutSchema(BaseModel):
     id: int
@@ -74,4 +74,4 @@ class CommentLikeOutSchema(BaseModel):
 class CommentLikeInputSchema(BaseModel):
     user_id: int
     comment_id: int
-    like: bool
+    like: bool = Field(default=False)
