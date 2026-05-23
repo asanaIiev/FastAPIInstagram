@@ -41,8 +41,7 @@ async def follow_accounts(follow: FollowInputSchema, db: Session = Depends(get_d
 async def get_followers(user_id: int, db: Session = Depends(get_db)):
     user_db = db.query(UserProfile).filter(UserProfile.id==user_id).first()
     if not user_db:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"User with id {user_id} doesnt have followers")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'No user with id {user_id}')
     followers_db = db.query(Follow).filter(Follow.following_id==user_id).limit(20).offset(0).all()
     return followers_db
 
@@ -51,27 +50,17 @@ async def get_followers(user_id: int, db: Session = Depends(get_db)):
 async def get_following(user_id: int, db: Session = Depends(get_db)):
     user_db = db.query(UserProfile).filter(UserProfile.id==user_id).first()
     if not user_db:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"User with id {user_id} doesnt have followings")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'No user with id {user_id}')
     followings_db = db.query(Follow).filter(Follow.follower_id==user_id).limit(20).offset(0).all()
     return followings_db
-
-@follow_router.get('/{following_id}/', response_model=FollowOutSchema,
-                   summary='Get following by id', tags=['Follow'])
-async def following_detail(following_id: int, db: Session = Depends(get_db)):
-    following_db1 = db.query(Follow).filter(Follow.id==following_id).first()
-    if not following_db1:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f'No user with id {following_id}')
-    return following_db1
 
 @follow_router.delete('/{following_id}/', response_model=dict,
                       summary='Delete following', tags=['Follow'])
 async def following_delete(following_id: int, db: Session = Depends(get_db)):
-    following_db3 = db.query(Follow).filter(Follow.id==following_id).first()
-    if not following_db3:
+    following_db = db.query(Follow).filter(Follow.following_id==following_id).first()
+    if not following_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail='Following not founded by this id')
-    db.delete(following_db3)
+    db.delete(following_db)
     db.commit()
     return {'detail': 'Following has been deleted'}
