@@ -1,9 +1,9 @@
-from app.database.models import Follow
+from app.database.models import Follow, UserProfile
 from app.database.schema import FollowOutSchema, FollowInputSchema
 from app.database.db import SessionLocal
 from sqlalchemy.orm import Session
 from typing import List
-from fastapi import HTTPException, Depends, APIRouter
+from fastapi import HTTPException, Depends, APIRouter, status
 
 follow_router = APIRouter(prefix='/follow')
 
@@ -16,11 +16,24 @@ def get_db():
 
 @follow_router.post('/', response_model=FollowOutSchema, summary='Follow any account.', tags=['Follow'])
 async def follow_accounts(follow: FollowInputSchema, db: Session = Depends(get_db)):
-    following_db = Follow(**follow.model_dump())
-    db.add(following_db)
+    follower_user = db.query(UserProfile).filter(UserProfile.id==follow.follower_id).first()
+    following_user = db.query(UserProfile).filter(UserProfile.id==follow.following_id).first()
+    following_exists = db.query(UserProfile).filter(
+        Follow.follower_id==follow.follower_id,
+        Follow.following_id==follow.following_id
+    )
+    if not follower_user or not following_user:
+        raise HTTPException(detail=f'No users with id {follow.follower_id} or {follow.following_id}',
+                            status_code=status.HTTP_404_NOT_FOUND)
+    if following_exists:
+        raise HTTPException(detail='U are already following this user', status_code=status.HTTP_409_CONFLICT)
+    if follow.follower_id == follow.following_id:
+        raise HTTPException(detail='U cannot subscribe to urself', status_code=status.HTTP_400_BAD_REQUEST)
+    follow_db = Follow(**follow.model_dump())
+    db.add(follow_db)
     db.commit()
-    db.refresh(following_db)
-    return following_db
+    db.refresh(follow_db)
+    return follow_db
 
 @follow_router.get('/', response_model=List[FollowOutSchema], summary='Get all followings.', tags=['Follow'])
 async def followings_list(db: Session = Depends(get_db)):
