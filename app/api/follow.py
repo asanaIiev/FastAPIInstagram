@@ -18,10 +18,10 @@ def get_db():
 async def follow_accounts(follow: FollowInputSchema, db: Session = Depends(get_db)):
     follower_user = db.query(UserProfile).filter(UserProfile.id==follow.follower_id).first()
     following_user = db.query(UserProfile).filter(UserProfile.id==follow.following_id).first()
-    following_exists = db.query(UserProfile).filter(
+    following_exists = db.query(Follow).filter(
         Follow.follower_id==follow.follower_id,
         Follow.following_id==follow.following_id
-    )
+    ).first()
     if not follower_user or not following_user:
         raise HTTPException(detail=f'No users with id {follow.follower_id} or {follow.following_id}',
                             status_code=status.HTTP_404_NOT_FOUND)
