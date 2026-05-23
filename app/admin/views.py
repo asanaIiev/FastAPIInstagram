@@ -2,7 +2,8 @@ from app.database.models import *
 from sqladmin import ModelView
 
 class UserProfileAdmin(ModelView, model=UserProfile):
-    column_list = [i.key for i in UserProfile.__mapper__.columns]
+    column_list = []
+    for i in UserProfile.__mapper__.columns: column_list.append(i.key)
 
 class UserProfileRefreshTokenAdmin(ModelView, model=UserProfileRefreshToken):
     column_list = [i.key for i in UserProfileRefreshToken.__mapper__.columns]
