@@ -1,6 +1,6 @@
-from fast_insta.database.models import Follow
-from fast_insta.database.schema import FollowOutSchema, FollowInputSchema
-from fast_insta.database.db import SessionLocal
+from app.database.models import Follow
+from app.database.schema import FollowOutSchema, FollowInputSchema
+from app.database.db import SessionLocal
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi import HTTPException, Depends, APIRouter

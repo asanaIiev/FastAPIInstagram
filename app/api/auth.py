@@ -1,13 +1,13 @@
-from fast_insta.database.db import SessionLocal
-from fast_insta.database.models import UserProfile, UserProfileRefreshToken
-from fast_insta.database.schema import UserProfileLoginSchema, UserProfileInputSchema, UserProfileOutSchema
+from app.database.db import SessionLocal
+from app.database.models import UserProfile, UserProfileRefreshToken
+from app.database.schema import UserProfileLoginSchema, UserProfileInputSchema, UserProfileOutSchema
 from fastapi import HTTPException, APIRouter, Depends, status
 from passlib.context import CryptContext
 from typing import Optional
 from sqlalchemy.orm import Session
 from jose import jwt
 from datetime import datetime, timedelta, timezone
-from fast_insta.config import ALGORITHM, ACCESS_TOKEN_LIFETIME, REFRESH_TOKEN_LIFETIME, SECRET_KEY
+from app.config import ALGORITHM, ACCESS_TOKEN_LIFETIME, REFRESH_TOKEN_LIFETIME, SECRET_KEY
 
 auth_router = APIRouter(prefix='/auth', tags=['Auth'])
 

@@ -1,6 +1,6 @@
-from fast_insta.database.models import PostLike
-from fast_insta.database.schema import PostLikeOutSchema, PostLikeInputSchema
-from fast_insta.database.db import SessionLocal
+from app.database.models import PostLike
+from app.database.schema import PostLikeOutSchema, PostLikeInputSchema
+from app.database.db import SessionLocal
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi import HTTPException, Depends, APIRouter

@@ -1,5 +1,5 @@
 from sqladmin import Admin
-from fast_insta.database.db import engine
+from app.database.db import engine
 from .views import *
 from fastapi import FastAPI
 

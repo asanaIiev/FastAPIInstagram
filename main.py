@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from fast_insta.admin.setup import admin_setup
-from fast_insta.api import auth, user_profile, follow, post, post_like, comment_like, comment
+from app.admin.setup import admin_setup
+from app.api import auth, user_profile, follow, post, post_like, comment_like, comment
 import uvicorn
 app = FastAPI()
 app.include_router(auth.auth_router)

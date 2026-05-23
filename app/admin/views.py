@@ -1,4 +1,4 @@
-from fast_insta.database.models import *
+from app.database.models import *
 from sqladmin import ModelView
 
 class UserProfileAdmin(ModelView, model=UserProfile):

@@ -1,6 +1,6 @@
-from fast_insta.database.db import SessionLocal
-from fast_insta.database.models import UserProfile
-from fast_insta.database.schema import UserProfileInputSchema, UserProfileOutSchema
+from app.database.db import SessionLocal
+from app.database.models import UserProfile
+from app.database.schema import UserProfileInputSchema, UserProfileOutSchema
 from fastapi import HTTPException, APIRouter, Depends, status
 from typing import List
 from sqlalchemy.orm import Session

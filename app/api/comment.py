@@ -1,6 +1,6 @@
-from fast_insta.database.models import Comment
-from fast_insta.database.schema import CommentOutSchema, CommentInputSchema
-from fast_insta.database.db import SessionLocal
+from app.database.models import Comment
+from app.database.schema import CommentOutSchema, CommentInputSchema
+from app.database.db import SessionLocal
 from sqlalchemy.orm import Session
 from typing import List
 from fastapi import HTTPException, Depends, APIRouter
