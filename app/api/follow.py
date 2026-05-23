@@ -28,7 +28,7 @@ async def follow_accounts(follow: FollowInputSchema, db: Session = Depends(get_d
     if following_exists:
         raise HTTPException(detail='U are already following this user', status_code=status.HTTP_409_CONFLICT)
     if follow.follower_id == follow.following_id:
-        raise HTTPException(detail='U cannot subscribe to urself', status_code=status.HTTP_400_BAD_REQUEST)
+        raise HTTPException(detail='U cannot follow urself', status_code=status.HTTP_400_BAD_REQUEST)
     follow_db = Follow(**follow.model_dump())
     db.add(follow_db)
     db.commit()
