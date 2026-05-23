@@ -58,7 +58,7 @@ async def login(user: UserProfileLoginSchema, db: Session = Depends(get_db)):
         raise HTTPException(detail='Invalid credentials', status_code=status.HTTP_400_BAD_REQUEST)
     access_token = create_access_token({'sub': user_db.username})
     refresh_token = create_refresh_token({'sub': user_db.username})
-    token_db = UserProfileRefreshToken(user_id=user_db.id, refresh_token=refresh_token)
+    token_db = UserProfileRefresh(user_id=user_db.id, refresh_token=refresh_token)
     db.add(token_db)
     db.commit()
     return {
@@ -69,8 +69,8 @@ async def login(user: UserProfileLoginSchema, db: Session = Depends(get_db)):
 
 @auth_router.post('/logout', response_model=dict, tags=['Auth'])
 async def logout(refresh_token: str, db: Session = Depends(get_db)):
-    refresh_db = db.query(UserProfileRefreshToken).filter(
-        UserProfileRefreshToken.refresh_token==refresh_token
+    refresh_db = db.query(UserProfileRefresh).filter(
+        UserProfileRefresh.refresh_token==refresh_token
     ).first()
     if not refresh_db:
         raise HTTPException(detail='Invalid token', status_code=status.HTTP_400_BAD_REQUEST)
@@ -80,8 +80,8 @@ async def logout(refresh_token: str, db: Session = Depends(get_db)):
 
 @auth_router.post('/access', response_model=dict, tags=['Auth'])
 async def refresh(refresh_token: str, db: Session = Depends(get_db)):
-    refresh_db = db.query(UserProfileRefreshToken).filter(
-        UserProfileRefreshToken.refresh_token==refresh_token
+    refresh_db = db.query(UserProfileRefresh).filter(
+        UserProfileRefresh.refresh_token==refresh_token
     ).first()
     if not refresh_db:
         raise HTTPException(detail='Invalid token', status_code=status.HTTP_409_CONFLICT)

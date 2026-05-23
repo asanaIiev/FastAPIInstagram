@@ -31,27 +31,27 @@ async def post_list(db: Session = Depends(get_db)):
 
 @post_router.get('/{post_id}/', response_model=PostOutSchema, summary='Get post by id.', tags=['Post'])
 async def post_detail(post_id: int, db: Session = Depends(get_db)):
-    post_db1 = db.query(Post).filter(Post.id==post_id).first()
-    if not post_db1:
+    post_db = db.query(Post).filter(Post.id==post_id).first()
+    if not post_db:
         raise HTTPException(status_code=404, detail='Post not founded by this id.')
-    return post_db1
+    return post_db
 
 @post_router.put('/{post_id}/', response_model=dict, summary='Update your post.', tags=['Post'])
 async def post_update(post_id: int, post: PostInputSchema, db: Session = Depends(get_db)):
-    post_db2 = db.query(Post).filter(Post.id==post_id).first()
-    if not post_db2:
+    post_db = db.query(Post).filter(Post.id==post_id).first()
+    if not post_db:
         raise HTTPException(status_code=404, detail='Post not founded with this id.')
     for key, value in post.model_dump().items():
-        setattr(post_db2, key, value)
+        setattr(post_db, key, value)
     db.commit()
-    db.refresh(post_db2)
+    db.refresh(post_db)
     return {'detail': 'Post has been changed.'}
 
 @post_router.delete('/{post_id}/', response_model=dict, summary='Delete post.', tags=['Post'])
 async def post_delete(post_id: int, db: Session = Depends(get_db)):
-    post_db3 = db.query(Post).filter(Post.id==post_id).first()
-    if not post_db3:
+    post_db = db.query(Post).filter(Post.id==post_id).first()
+    if not post_db:
         raise HTTPException(status_code=404, detail='Post not founded by this id.')
-    db.delete(post_db3)
+    db.delete(post_db)
     db.commit()
     return {'detail': 'Post has been deleted.'}

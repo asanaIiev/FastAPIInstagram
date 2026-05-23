@@ -31,27 +31,27 @@ async def comment_like_list(db: Session = Depends(get_db)):
 
 @comment_like_router.get('/{comment_like_id}/', response_model=CommentLikeOutSchema, summary='Get comments like by id.', tags=['CommentLike'])
 async def comment_like_detail(comment_like_id: int, db: Session = Depends(get_db)):
-    comment_like_db1 = db.query(CommentLike).filter(CommentLike.id==comment_like_id).first()
-    if not comment_like_db1:
+    comment_like_db = db.query(CommentLike).filter(CommentLike.id==comment_like_id).first()
+    if not comment_like_db:
         raise HTTPException(status_code=404, detail='Comments like not founded by this id.')
-    return comment_like_db1
+    return comment_like_db
 
 @comment_like_router.put('/{comment_like_id}/', response_model=dict, summary='Update your comments like.', tags=['CommentLike'])
 async def comment_like_update(comment_like_id: int, comment_like: CommentLikeOutSchema, db: Session = Depends(get_db)):
-    comment_like_db2 = db.query(CommentLike).filter(CommentLike.id==comment_like_id).first()
-    if not comment_like_db2:
+    comment_like_db = db.query(CommentLike).filter(CommentLike.id==comment_like_id).first()
+    if not comment_like_db:
         raise HTTPException(status_code=404, detail='Comments like not founded with this id.')
     for key, value in comment_like.model_dump().items():
-        setattr(comment_like_db2, key, value)
+        setattr(comment_like_db, key, value)
     db.commit()
-    db.refresh(comment_like_db2)
+    db.refresh(comment_like_db)
     return {'detail': 'Comments like has been changed.'}
 
 @comment_like_router.delete('/{comment_like_id}/', response_model=dict, summary='Delete comments like.', tags=['CommentLike'])
 async def comment_like_delete(comment_like_id: int, db: Session = Depends(get_db)):
-    comment_like_db3 = db.query(CommentLike).filter(CommentLike.id==comment_like_id).first()
-    if not comment_like_db3:
+    comment_like_db = db.query(CommentLike).filter(CommentLike.id==comment_like_id).first()
+    if not comment_like_db:
         raise HTTPException(status_code=404, detail='Comments like not founded by this id.')
-    db.delete(comment_like_db3)
+    db.delete(comment_like_db)
     db.commit()
     return {'detail': 'Comments like has been deleted.'}
