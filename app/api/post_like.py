@@ -36,17 +36,6 @@ async def posts_like_detail(post_like_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail='Posts like not founded by this id.')
     return post_like_db
 
-@post_like_router.put('/{post_like_id}/', response_model=dict, summary='Update your posts like.', tags=['PostLike'])
-async def posts_like_update(post_like_id: int, post: PostLikeInputSchema, db: Session = Depends(get_db)):
-    post_like_db = db.query(PostLike).filter(PostLike.id==post_like_id).first()
-    if not post_like_db:
-        raise HTTPException(status_code=404, detail='Posts like not founded with this id.')
-    for key, value in post.model_dump().items():
-        setattr(post_like_db, key, value)
-    db.commit()
-    db.refresh(post_like_db)
-    return {'detail': 'Posts like has been changed.'}
-
 @post_like_router.delete('/{post_like_id}/', response_model=dict, summary='Delete posts like.', tags=['PostLike'])
 async def posts_like_delete(post_like_id: int, db: Session = Depends(get_db)):
     post_like_db = db.query(PostLike).filter(PostLike.id==post_like_id).first()
