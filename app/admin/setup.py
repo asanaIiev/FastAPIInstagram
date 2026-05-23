@@ -6,7 +6,7 @@ from fastapi import FastAPI
 def admin_setup(app: FastAPI):
     admin = Admin(app, engine)
     admin.add_view(UserProfileAdmin)
-    admin.add_view(UserProfileRefreshTokenAdmin)
+    admin.add_view(UserProfileRefreshAdmin)
     admin.add_view(FollowAdmin)
     admin.add_view(PostAdmin)
     admin.add_view(PostLikeAdmin)
