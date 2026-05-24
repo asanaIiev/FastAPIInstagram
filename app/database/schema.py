@@ -18,9 +18,9 @@ class UserProfileOutSchema(BaseModel):
     status: StatusChoices
     registered_date: date
 class UserProfileInputSchema(BaseModel):
-    username: str = Field(default=None, min_length=3, max_length=30)
-    password: str = Field(default=None, min_length=6)
-    email: EmailStr = None
+    username: Optional[str] = Field(default=None, min_length=3, max_length=30)
+    password: Optional[str] = Field(default=None, min_length=6)
+    email: Optional[EmailStr] = None
     status: Optional[StatusChoices] = None
 
 class FollowOutSchema(BaseModel):
