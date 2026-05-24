@@ -14,16 +14,10 @@ async def get_db():
     finally:
         db.close()
 
-@user_router.get('/', response_model=List[UserProfileOutSchema], summary='Get all users', tags=['Users'])
-async def get(db: Session = Depends(get_db)):
-    users_db = db.query(UserProfile).all()
-    if not users_db: raise HTTPException(detail='No users', status_code=status.HTTP_404_NOT_FOUND)
-    return users_db
-
 @user_router.get('/{user_id}/', response_model=UserProfileOutSchema, summary='Get users by id', tags=['Users'])
 async def get(user_id: int, db: Session = Depends(get_db)):
     user_db = db.query(UserProfile).filter(UserProfile.id==user_id).first()
-    if not user_db: raise HTTPException(detail='No user', status_code=status.HTTP_404_NOT_FOUND)
+    if not user_db: raise HTTPException(detail=f'No user with id {user_id}', status_code=status.HTTP_404_NOT_FOUND)
     return user_db
 
 @user_router.put('/{user_id}/', response_model=UserProfileOutSchema, summary='Change users credentials', tags=['Users'])
