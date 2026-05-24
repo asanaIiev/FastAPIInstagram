@@ -66,7 +66,7 @@ class Post(Base):
     post: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(Text)
     hashtag: Mapped[str] = mapped_column(String)
-    created_date: Mapped[date] = mapped_column(Date, default=date.today)
+    posted_date: Mapped[date] = mapped_column(Date, default=date.today)
 
     post_user: Mapped[UserProfile] = relationship(back_populates='user_post')
     post_like: Mapped[List['PostLike']] = relationship(back_populates='like_post',

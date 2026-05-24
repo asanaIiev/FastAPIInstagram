@@ -38,7 +38,7 @@ class PostOutSchema(BaseModel):
     post: str
     description: str
     hashtag: str
-    created_date: date
+    posted_date: date
 class PostInputSchema(BaseModel):
     user_id: int
     post: Optional[str] = None
