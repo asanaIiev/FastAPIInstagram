@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.admin.setup import admin_setup
 from app.api import auth, user_profile, follow, post, post_like, comment_like, comment
 import uvicorn
+
 app = FastAPI()
 app.include_router(auth.auth_router)
 app.include_router(user_profile.user_router)

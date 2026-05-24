@@ -9,7 +9,7 @@ class UserProfileRefreshAdmin(ModelView, model=UserProfileRefresh):
     column_list = [i.key for i in UserProfileRefresh.__mapper__.columns]
 
 class FollowAdmin(ModelView, model=Follow):
-    column_list = [i.key for i in Follow.__mapper__.columns]
+    column_list = '__all__'
 
 class PostAdmin(ModelView, model=Post):
     column_list = [i.key for i in Post.__mapper__.columns]
